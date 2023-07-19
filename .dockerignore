@@ -1,0 +1,10 @@
+.env
+.env.production
+.editorconfig
+.env.example
+.gitattributes
+.gitignore
+.styleci.yml
+README.md
+Dockerfile
+Dockerfile.base

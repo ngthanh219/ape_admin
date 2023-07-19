@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+    ape_app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: ape_app:latest
+        container_name: ape_app
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www/html/
+            - ./docker-build/php.ini:/usr/local/etc/php/conf.d/php.ini
+
+    ape_nginx_service:
+        build:
+            context: .
+            dockerfile: ./docker-build/nginx/Dockerfile
+        container_name: ape_nginx_service
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www/html/
+            - ./docker-build/nginx/:/etc/nginx/conf.d/
+        ports:
+            - "80:80"
+            - "443:443"
+
+    # ape_admin_db:
+    #     image: mysql:5.7.32
+    #     volumes:
+    #         - dbdata:/mysql_data
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: admin@rikkei123
+    
+    # adminer:
+    #     container_name: adminer
+    #     image: clue/adminer
+    #     links:
+    #         - ape_admin_db:mysql
+    #     environment:
+    #         PMA_HOST: ape_admin_db
+    #         MYSQL_ROOT_PASSWORD: admin@rikkei123
+    #     ports:
+    #         - 8888:80
+    #     depends_on:
+    #         - ape_admin_db
+volumes:
+    dbdata:
+        driver: local
